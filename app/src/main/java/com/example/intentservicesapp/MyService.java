@@ -22,7 +22,7 @@ public class MyService extends IntentService {
     private final int MIN = 0;
     private final int MAX = 100;
 
-    public MyService(){
+    public MyService() {
         super(MyService.class.getSimpleName());
     }
 
@@ -40,12 +40,19 @@ public class MyService extends IntentService {
         return mBinder;
     }
 
+
+    /*new thread is automatically created and service runs on it.
+    No need to explicitly create a separate thread.--Feature of intent services which diffrentiates it from normal services
+
+     */
+    //UI Thread is allowed to do other ui and small tasks
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
         mIsRandomGeneratorOn = true;
         startRandomNumberGenerator();
     }
 
+    //onDestroy method of service calls stopRandomNumberGenerator() to stop generating number
     public void onDestroy() {
         super.onDestroy();
         stopRandomNumberGenerator();
@@ -53,6 +60,7 @@ public class MyService extends IntentService {
     }
 
 
+    //random number generator method
     private void startRandomNumberGenerator() {
         while (mIsRandomGeneratorOn) {
             try {
@@ -68,6 +76,7 @@ public class MyService extends IntentService {
         }
     }
 
+    //stop number generator method
     private void stopRandomNumberGenerator() {
         mIsRandomGeneratorOn = false;
     }
